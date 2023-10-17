@@ -21,18 +21,14 @@ class User( db.Model, SerializerMixin):
     dietary_restrictions = db.Column(db.String)
     profile_image = db.Column(db.String)
 
-    #relationship
-
+    #relationships
     hosts = db.relationship('Host', back_populates='user')
     guests = db.relationship('Guest', back_populates='user')
     event_blockeds = db.relationship('EventBlocked', back_populates='user')
     blocker = db.relationship('UserBlocked', back_populate = 'blocker')
     blockee = db.relationship('UserBlocked', back_populates = 'blockee')
 
-    # blocked_users = db.relationship('UserBlocked', back_populates='blocker')
-
     #password code
-
     @hybrid_property
     def password_hash(self):
         return self._password_hash
@@ -66,11 +62,6 @@ class Host(db.Model, SerializerMixin):
     invites = db.relationship('Invite', back_populates = ('host'))
 
 
-    # #relationships
-
-    # hosted_by = db.relationship('User', back_populates='hosts')
-    # hosted_event = db.relationship('Event', back_populates='hosts')
-
 
 
 class Guest(db.Model, SerializerMixin):
@@ -89,10 +80,6 @@ class Guest(db.Model, SerializerMixin):
 
     # relationships
     invites = db.relationship('Invite', back_populates = ('guest'))
-    # #relationships
-
-    # attended_by = db.relationship('User', back_populates='guests')
-    # attended_event = db.relationship('Event', back_populates='guests')
 
 
 
@@ -104,7 +91,6 @@ class Invite(db.Model, SerializerMixin):
  
 
     #relationships with Foreign Key
-
     host_id = db.Column(db.Integer, db.ForeignKey('hosts.id'))
     host = db.relationship('Host', back_populates=('invites'))
 
@@ -141,17 +127,7 @@ class Event(db.Model, SerializerMixin):
     private_party = db.Column(db.Boolean)
     image = db.Column(db.String)
 
-    # #relationships with ForeignKey
-
-    # user_id = db.Column(db.Integer, db.ForeignKey('user_table.id'))
-    # user = db.relationship('User', back_populates='events')
-
-    # event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
-    # event = db.relationship('')
-
-
     #relationships
-        
     event_blockeds = db.relationship('EventBlocked', back_populates='event')
     hosts = db.relationship('Host', back_populates='event')
     guests = db.relationship('Guest', back_populates='event')
@@ -172,12 +148,4 @@ class EventBlocked(db.Model, SerializerMixin):
 
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
     event = db.relationship('Event', back_populates=('event_blockeds'))
-
-    # #relationships
-
-    # blocked_users = db.relationship('User', back_populates='blocked_events')
-    # blocked_event = db.relationship('Event', back_populates='blocked_users')
-
-
-
 

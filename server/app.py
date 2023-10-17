@@ -185,6 +185,7 @@ class AvailableEvents(Resource):
 
     def get(self, id):
         # need to add user blocked
+        # add event not private
         available_events = [e.to_dict() for e in Event.query.filter(not (id in [h.user_id for h in Event.hosts] or (id in [g.user_id for g in Event.guests]) or (id in [b.user_id for b in Event.event_blocked]) or ())).all()]
         return make_response(available_events, 200)
 
@@ -199,7 +200,7 @@ class BlockedFromEvent(Resource):
 
 api.add_resource(BlockedFromEvent, '/blocked-from-event/<int:id>')
 
-
+# log in shit
 class Login(Resource):
     def post(self):
         data = request.get_json()
