@@ -3,6 +3,7 @@ from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.ext.hybrid import hybrid_property
 from config import bcrypt
 
 from config import db
@@ -28,7 +29,6 @@ class User( db.Model, SerializerMixin):
     blocker = db.relationship('UserBlocked', back_populate = 'blocker')
     blockee = db.relationship('UserBlocked', back_populates = 'blockee')
 
-    # need to write the relationships for user blocked 
     # blocked_users = db.relationship('UserBlocked', back_populates='blocker')
 
     #password code
