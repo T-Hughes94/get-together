@@ -9,7 +9,7 @@ from flask_restful import Resource
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import User, Event, Host, Guest, Invite, EventBlocked, Blocker, Blockee
+from models import User, Event, Host, Guest, Invite, EventBlocked, UserBlock
 
 
 # Views go here!
@@ -274,7 +274,7 @@ class AvailableEvents(Resource):
                 available_events.remove(event)
         return make_response(available_events, 200)
 
-api.add_resource(AvailableEvents, 'users/<int:id>/available-events')
+api.add_resource(AvailableEvents, '/users/<int:id>/available-events')
 
 # put in an event id and get all the users who were blocked from that event either explicitly or because they were blocked from the host
 class BlockedFromEvent(Resource):
@@ -287,12 +287,12 @@ class BlockedFromEvent(Resource):
 
         return make_response(blocked_ids, 200)
 
-api.add_resource(BlockedFromEvent, 'events/<int:id>/blocked-from-event')
+api.add_resource(BlockedFromEvent, '/events/<int:id>/blocked-from-event')
 
 # put in the users id and get the id of everyone who has blocked that user
 class BlockedBy(Resource):
     def get(self, id):
-        blocked_by_ids = [u.id for u in User.query.filter(id in [b.blockee.user_id for b in User.blockers]).all()]
+        blocked_by_ids = [ub.blocker.id for ub in UserBlock.query.filter(UserBlock.blockee_id == id).all()]
         return make_response(blocked_by_ids, 200)
     
 api.add_resource(BlockedBy, '/users/<int:id>/blocked-by')
@@ -300,13 +300,12 @@ api.add_resource(BlockedBy, '/users/<int:id>/blocked-by')
 # put in the users id and get back the ids of everyone who that user blocked
 class BlockedUsers(Resource):
     def get(self, id):
-        users_blocked_by = [u.id for u in User.query.filter(id in [b.blocker.user_id for b in User.blockees]).all()]
+        users_blocked_by = [ub.blockee.id for ub in UserBlock.query.filter(UserBlock.blocker_id == id).all()]
         return make_response(users_blocked_by, 200)
 api.add_resource(BlockedUsers, '/users/<int:id>/blocked')
     
 class BlockUser(Resource):
     def post(self, blocker_id, blockee_id):
-        data = request.get_json()
         blocker_user = User.query.filter(User.id == blocker_id).first()
         blockee_user = User.query.filter(User.id == blockee_id).first()
         blocker_user.block(blockee_user)

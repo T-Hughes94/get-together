@@ -27,27 +27,22 @@ class User( db.Model, SerializerMixin):
     event_blockeds = db.relationship('EventBlocked', back_populates='user')
     
         # returns the other users that this user has blocked
-    blockers = db.relationship('Blocker', back_populates = 'user')
+    blockers = db.relationship('UserBlock', foreign_keys='UserBlock.blocker_id', back_populates = 'blocker_relation')
     
         # returns the other users that have blocked this user
-    blockees = db.relationship('Blockee', back_populates = 'user')
+    blockees = db.relationship('UserBlock', foreign_keys='UserBlock.blockee_id', back_populates = 'blockee_relation')
 
     # serialize rules
-    serialize_rules = ("-hosts.user", "-guests.user", "-event_blockeds.user", "-blockers.user", "-blockees.user")
+    serialize_rules = ("-hosts.user", "-guests.user", "-event_blockeds.user", "-blockers.blocker_relation", "-blockees.blockee_relation")
+
     # methods
     # block another user (input the entire blockee)
     def block(self, blockee):
-        new_blocker = Blocker(
-            user_id = self.id
+        new_block = UserBlock(
+            blocker_id = self.id,
+            blockee_id = blockee.id
         )
-        new_blockee = Blockee(
-            user_id = blockee.id
-        )
-        db.session.add(new_blockee, new_blocker)
-        db.session.commit()
-        new_blocker.blockee_id = new_blockee.id
-        new_blockee.blocker_id = new_blocker.id
-        db.session.add(new_blockee, new_blocker)
+        db.session.add(new_block)
         db.session.commit()
 
 
@@ -159,8 +154,8 @@ class Event(db.Model, SerializerMixin):
             host_users.append(host.user)
         blocked_by_hosts = []
         for user in host_users:
-            for blocker in user.blockers:
-                blocked_by_hosts.append(blocker.blockee.user)
+            for ub in user.blockers:
+                blocked_by_hosts.append(ub.blockee_relation)
         # people blocked for the event specifically
         blocked_by_event=[]
         for block in self.event_blockeds:
@@ -186,27 +181,16 @@ class EventBlocked(db.Model, SerializerMixin):
     serialize_rules = ("-user.event_blockeds", "-event.event_blockeds")
 
 
-class Blocker(db.Model, SerializerMixin):
-    __tablename__ = 'blockers'
+class UserBlock(db.Model, SerializerMixin):
+    __tablename__ = "user_blocks"
 
-    id = db.Column(db.Integer, primary_key= True)
-    
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = db.relationship("User", back_populates = "blockers")
+    id = db.Column(db.Integer, primary_key = True)
 
-    blockee_id = db.Column(db.Integer, db.ForeignKey('blockees.id'))
-    blockee = db.relationship('Blockee', back_populates='blocker')
+    blocker_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    blockee_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
-    serialize_rules = ("-user.blockers", "-blockee.blocker")
+    # relationships
+    blocker_relation = db.relationship("User", foreign_keys=[blocker_id], back_populates="blockers")
+    blockee_relation = db.relationship("User", foreign_keys=[blockee_id], back_populates="blockees")
 
-class Blockee(db.Model, SerializerMixin):
-    __tablename__ = "blockees"
-    
-    id = db.Column(db.Integer, primary_key= True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = db.relationship("User", back_populates = "blockees")
-
-    blocker_id = db.Column(db.Integer, db.ForeignKey('blockers.id'))
-    blocker = db.relationship('Blocker', back_populates='blockee')
-
-    serialize_rules = ("-user.blockees", "-blockee.blockee")
+    serialize_rules = ("-blockee_relation.blockees", "-blocker_relation.blockers")

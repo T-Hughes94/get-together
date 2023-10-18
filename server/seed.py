@@ -23,7 +23,7 @@ from faker import Faker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app import app
-from models import db, User, Host, Guest, Invite, UserBlocked, Event, EventBlocked, Blocker, Blockee
+from models import db, User, Host, Guest, Invite, UserBlock, EventBlocked, Event
 
 with app.app_context():
     print("Starting seed...")
@@ -111,19 +111,14 @@ def create_invite():
     return invites
     
 def user_blocks():
-    blocks = []
     for _ in range(10):
-        blocks.append(UserBlocked())
-    bnb = []
-    block_index = 0
-    for block in blocks:
+        users = User.query.all()
         first_num = random.randint(1,10)
         second_num = random.randint(1,10)
         if second_num != first_num:
-            bnb.append(Blocker(user_id = first_num, user_blocked_id = block_index))
-            bnb.append(Blockee(user_id = second_num, user_blocked_id = block_index))
-        block_index += 1
-    return [blocks, bnb]
+            blocker = User.query.filter(User.id == first_num).first()
+            blockee = User.query.filter(User.id == second_num).first()
+            blocker.block(blockee)
 
 
 
@@ -155,7 +150,6 @@ if __name__ == '__main__':
         Guest.query.delete()
         Host.query.delete()
         Invite.query.delete()
-        UserBlocked.query.delete()
         EventBlocked.query.delete()
         
         users = create_users()
@@ -163,8 +157,7 @@ if __name__ == '__main__':
         guests = create_guests()
         hosts = create_hosts()
         invites = create_invite()
-        blocked_users = user_blocks()
-        blocked_events = blocked_events()
+        event_blocks = blocked_events()
 
 
         db.session.add_all(users)
@@ -172,8 +165,7 @@ if __name__ == '__main__':
         db.session.add_all(guests)
         db.session.add_all(hosts)
         db.session.add_all(invites)
-        db.session.add_all(blocked_users[0])
-        db.session.add_all(blocked_users[1])
-        db.session.add_all(blocked_events)
+        db.session.add_all(event_blocks)
 
         db.session.commit()
+        user_blocks()
