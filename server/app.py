@@ -166,13 +166,58 @@ class GuestById(Resource):
         except ValueError as e:
             print(e.str())
             return make_response(jsonify({"error": ["validation errors"]}), 406)
-
         
+api.add_resource(GuestById, '/guests/<int:id>')
+        
+class Guests(Resource):
+    def post(self,):
+        data = request.get_json()
+        try:
+            new_guest = Guest(
+                user_id = data.get("user_id"),
+                event_id = data.get("event_id"),
+                rsvp = data.get("rsvp")
+            )
+            db.session.add(new_guest)
+            db.session.commit()
+
+            return make_response(new_guest.to_dict(), 201)
+        except ValueError:
+            return make_response({"error": ["validation errors"]},406)
 
 
-############################## post delete for host ##############################
+############################## post delete for host ################################
 
-# bespoke routes
+############################## post delete for UserBlocked ##########################
+@app.post('/events-blocked')
+def create_blocked_event():
+    data = request.get_json()
+
+    try:
+        new_blocked_event = EventBlocked()
+        db.session.add(new_blocked_event)
+        db.session.commit()
+
+        return make_response(jsonify(new_blocked_event.to_dict()), 201)
+    except ValueError:
+        return make_response(jsonify({"error": ["validation errors"]}),406)
+    
+@app.delete('/events-blocked/<int:id>')
+def delete_blocked_event(id):
+    blocked_event = EventBlocked.query.filter(EventBlocked.id == id).first()
+
+    if not blocked_event:
+        return make_response(
+            jsonify({"error": "Blocked event not found"}),
+            404
+        )
+
+    db.session.delete(blocked_event)
+    db.session.commit()
+
+    return make_response(jsonify({}), 204)
+
+############################## bespoke routes #######################################
 class UserEvents(Resource):
     
     def get(self, id):
@@ -200,7 +245,7 @@ class BlockedFromEvent(Resource):
 
 api.add_resource(BlockedFromEvent, '/blocked-from-event/<int:id>')
 
-# log in shit
+################################################## log in stuff #######################################
 class Login(Resource):
     def post(self):
         data = request.get_json()
