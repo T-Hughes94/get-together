@@ -84,7 +84,7 @@ class Events(Resource):
     def get(self):
         events = [e.to_dict() for e in Event.query.all()]
 
-        return make_response(events.to_dict(), 201)
+        return make_response(events, 201)
         
 api.add_resource(Events, '/events')
 
