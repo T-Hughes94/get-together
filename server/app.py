@@ -35,9 +35,9 @@ def post_user():
         new_user = User(
             name=data.get("name"),
             DOB=data.get("DOB"),
-            dietary_restrictions=data.get("dietary_restrictions"),
+            dietary_restrictions=data.get("dietaryRestrictions"),
             profile_image = data.get("profile_image"),
-            password_hash = data.get("password_hash")
+            password_hash = data.get("password")
         )
         db.session.add(new_user)
         db.session.commit()
@@ -80,6 +80,14 @@ def delete_user(id):
 
 
 ###################################### full crud for events ################################
+class Events(Resource):
+    def get(self):
+        events = [e.to_dict() for e in Event.query.all()]
+
+        return make_response(events.to_dict(), 201)
+        
+api.add_resource(Events, '/events')
+
 @app.get('/events/<int:id>')
 def get_events_by_id(id):
     event = Event.query.filter(Event.id == id).first()
