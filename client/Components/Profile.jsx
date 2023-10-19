@@ -1,4 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react'
 
+function Profile() {
+  return (
+    <div>Profile</div>
+  )
+}
 
-export default Home;
+export default Profile

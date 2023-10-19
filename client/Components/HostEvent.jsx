@@ -1,4 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react'
 
+function HostEvent() {
+  return (
+    <div>HostEvent</div>
+  )
+}
 
-export default Home;
+export default HostEvent

@@ -4,12 +4,12 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import React from "react";
 import { createBrowserRouter, Route, createRoutesFromElements, RouterProvider, Link } from "react-router-dom";
-import Home from "./Components/Home";
-import Login from "./Components/Login";
-import Profile from "./Components/Profile";
-import SignUp from "./Components/SignUp"
-import GuestEvent from "./Components/GuestEvent"
-import HostEvent from "./Components/HostEvent"
+import Home from "../Components/Home";
+import Login from "../Components/Login";
+import Profile from "../Components/Profile";
+import SignUp from "../Components/SignUp"
+import GuestEvent from "../Components/GuestEvent"
+import HostEvent from "../Components/HostEvent"
 
 
 

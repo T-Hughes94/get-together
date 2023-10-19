@@ -1,4 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react'
 
+function GuestEvent() {
+  return (
+    <div>GuestEvent</div>
+  )
+}
 
-export default Home;
+export default GuestEvent

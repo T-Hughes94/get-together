@@ -1,4 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react'
 
+function SignUp() {
+  return (
+    <div>SignUp</div>
+  )
+}
 
-export default Home;
+export default SignUp
