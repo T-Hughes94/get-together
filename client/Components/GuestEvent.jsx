@@ -1,46 +1,89 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 
-function Home() {
-  const [events, setEvents] = useState([]);
+class GuestEvent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      eventTitle: '',
+      Invites: '',
+      eventDescription: '',
+      
+    };
+  }
 
-  useEffect(() => {
-    fetch('/api/events')
+  handleInputChange = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
+
+  handleGuestEvent = () => {
+    
+    const { eventTitle, Invites, eventDescription } = this.state;
+
+
+    fetch('/api/guest-event', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ eventTitle,Invites, eventDescription }),
+    })
       .then((response) => response.json())
       .then((data) => {
-        setEvents(data);
+        if (data.success) {
+          
+          this.props.history.push(`/events/${data.eventId}`);
+        } else {
+          alert(data.message);
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
       });
-  }, []);
-
-  return (
-    <div>
-      <h1>Welcome to Get Together!</h1>
-      <p>Discover and plan events with ease!</p>
-import React from 'react'
-
-function GuestEvent() {
-  return (
-    <div>GuestEvent</div>
-  )
+  };
+//add class names to divs, etc, for Terence when he does the CSS.
+  render() {
+    return (
+      <div> 
+        <h1>Events I am Attending</h1>
+        <form>
+          <div>
+            <label htmlFor="eventTitle">Event Title:</label>
+            <input
+              type="text"
+              id="eventTitle"
+              name="eventTitle"
+              value={this.state.eventTitle}
+              onChange={this.handleInputChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="Invites">Guest Invites:</label>
+            <input
+              type="text"
+              id="Invites"
+              name="Invites"
+              value={this.state.eventLocation}
+              onChange={this.handleInputChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="eventDescription">Event Description:</label>
+            <textarea
+              id="eventDescription"
+              name="eventDescription"
+              value={this.state.eventDescription}
+              onChange={this.handleInputChange}
+            />
+          </div>
+        </form>
+      </div>
+    );
+  }
 }
-      <h2>Events</h2>
-      <img src='URL HERE' />
-      <ul>
-        {events.map((event) => (
-          <li key={event.id}>
-            <img src="./assets/dogparty.jpg" alt="Event" />
-            <h3>{event.name}</h3>
-            <p>Date: {event.date}</p>
-            <p>Location: {event.location}</p>
-            <p>{event.description}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
 
-export default GuestEvent
+export default GuestEvent;
+
+
+
 

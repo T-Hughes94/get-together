@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-function Profile() {
-  return (
-    <div>Profile</div>
-  )
-}
 
 function Profile({ user }) {
   const [hostedEvents, setHostedEvents] = useState([]);
@@ -14,7 +9,7 @@ function Profile({ user }) {
   useEffect(() => {
 
     //fetch user's events, hosted and attending
-    fetch(`/api/users/${user.id}/hosted-events`)
+    fetch(`/api/users/${user?.id}/hosted-events`)
       .then((response) => response.json())
       .then((data) => {
         setHostedEvents(data);
@@ -23,7 +18,7 @@ function Profile({ user }) {
         console.error('Error fetching hosted events:', error);
       });
 
-    fetch(`/api/users/${user.id}/attended-events`)
+    fetch(`/api/users/${user?.id}/attended-events`)
       .then((response) => response.json())
       .then((data) => {
         setAttendedEvents(data);
@@ -33,7 +28,7 @@ function Profile({ user }) {
       });
 
     // fetch blocked users
-    fetch(`/api/users/${user.id}/blocked-users`)
+    fetch(`/api/users/${user?.id}/blocked-users`)
       .then((response) => response.json())
       .then((data) => {
         setBlockedUsers(data);
@@ -41,17 +36,17 @@ function Profile({ user }) {
       .catch((error) => {
         console.error('Error fetching blocked users:', error);
       });
-  }, [user.id]);
+  }, [user?.id]);
 
   return (
     <div>
-      <h1>{user.username}'s Profile</h1>
+      <h1>{user?.username}'s Profile</h1>
       <img src="IMAGE HERE" alt="User Profile Image" />
-      <p>Email: {user.email}</p>
-      
+      <p>Email: {user?.email}</p>
+
       <h2>Events I Am Hosting</h2>
       <ul>
-        {hostedEvents.map((event) => (
+        {hostedEvents?.map((event) => (
           <li key={event.id}>{event.name}</li>
         ))}
       </ul>

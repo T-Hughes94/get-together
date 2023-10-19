@@ -109,8 +109,3 @@ function Signup({ history }) {
 
 export default Signup;
 
-function SignUp() {
-  return (
-    <div>SignUp</div>
-  )
-}
