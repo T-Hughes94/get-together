@@ -322,7 +322,7 @@ class Login(Resource):
         data = request.get_json()
         username= data['username']
         password= data['password']
-        user = User.query.filter(User.username == username).first()
+        user = User.query.filter(User.name == username).first()
         if user:
             if user.authenticate(password):
                 session['user_id'] = user.id

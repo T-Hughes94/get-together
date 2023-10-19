@@ -22,7 +22,7 @@ const Login = () => {
 
       if (response.ok) {
         const user = await response.json();
-        console.log('Logged in as:', user.username);
+        console.log('Logged in as:', user.name);
       } else {
         setError('Login failed');
       }
