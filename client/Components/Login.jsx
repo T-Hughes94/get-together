@@ -3,8 +3,14 @@ import React, { useState } from 'react';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleLogin = async () => {
+    if (!username || !password) {
+      setError('Please fill in both username and password fields.');
+      return;
+    }
+
     try {
       const response = await fetch('http://your-flask-server-url/login', {
         method: 'POST',
@@ -15,17 +21,13 @@ const Login = () => {
       });
 
       if (response.ok) {
-        
         const user = await response.json();
-       
         console.log('Logged in as:', user.username);
       } else {
-        
-        console.error('Login failed');
+        setError('Login failed');
       }
     } catch (error) {
-      
-      console.error('Error:', error);
+      setError('Error: ' + error.message);
     }
   };
 
@@ -51,6 +53,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="button" onClick={handleLogin}>
           Login
         </button>
