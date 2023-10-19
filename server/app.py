@@ -25,7 +25,7 @@ def get_users_by_id(id):
 
     if not user:
         return make_response(jsonify({"error": "User not found"}), 404)
-    return make_response(jsonify(user.to_dict()), 200)
+    return make_response(user.to_dict(), 200)
 
 @app.post('/users')
 def post_user():

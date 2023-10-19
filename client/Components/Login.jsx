@@ -12,7 +12,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('http://your-flask-server-url/login', {
+      const response = await fetch('api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,6 +29,9 @@ const Login = () => {
     } catch (error) {
       setError('Error: ' + error.message);
     }
+    // fetch('/api/users/1')
+    // .then(r=>r.json())
+    // .then(r=>console.log(r))
   };
 
   return (
@@ -41,7 +44,10 @@ const Login = () => {
             type="text"
             id="username"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => {
+              setUsername(e.target.value)
+              console.log(username)
+            }}
           />
         </div>
         <div>
