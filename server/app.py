@@ -19,7 +19,7 @@ def index():
     return '<h1>Phase 4 Project Server</h1>'
 
 ############################ full crud user routes ########################################
-@app.get('/users/ <int:id>')
+@app.get('/users/<int:id>')
 def get_users_by_id(id):
     user = User.query.filter(User.id == id).first()
 
@@ -36,7 +36,8 @@ def post_user():
             name=data.get("name"),
             DOB=data.get("DOB"),
             dietary_restrictions=data.get("dietary_restrictions"),
-            profile_image = data.get("profile_image")
+            profile_image = data.get("profile_image"),
+            password_hash = data.get("password_hash")
         )
         db.session.add(new_user)
         db.session.commit()

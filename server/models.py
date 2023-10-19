@@ -15,25 +15,28 @@ class User( db.Model, SerializerMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False, unique=True)
+    name = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
-    DOB = db.Column(db.DateTime, nullable = False)
+    DOB = db.Column(db.DateTime)
     dietary_restrictions = db.Column(db.String)
     profile_image = db.Column(db.String)
 
     #relationships
     hosts = db.relationship('Host', back_populates='user')
     guests = db.relationship('Guest', back_populates='user')
-    event_blockeds = db.relationship('EventBlocked', back_populates='user')
+    event_blockeds = db.relationship('EventBlocked', back_populates='user', cascade = 'all, delete')
     
         # returns the other users that this user has blocked
-    blockers = db.relationship('UserBlock', foreign_keys='UserBlock.blocker_id', back_populates = 'blocker_relation')
+    blockers = db.relationship('UserBlock', foreign_keys='UserBlock.blocker_id', back_populates = 'blocker_relation', cascade = 'all, delete')
     
         # returns the other users that have blocked this user
-    blockees = db.relationship('UserBlock', foreign_keys='UserBlock.blockee_id', back_populates = 'blockee_relation')
+    blockees = db.relationship('UserBlock', foreign_keys='UserBlock.blockee_id', back_populates = 'blockee_relation', cascade = 'all, delete')
 
     # serialize rules
-    serialize_rules = ("-hosts.user", "-guests.user", "-event_blockeds.user", "-blockers.blocker_relation", "-blockees.blockee_relation")
+    # serialize_rules = ("-hosts.user", "-guests.user", "-event_blockeds.user", "-blockers.blocker_relation", "-blockees.blockee_relation")
+    # serialize_rules = ("-hosts.user", "-guests.user", "-event_blockeds.user", "-blockers.blocker_relation", "-blockees", "-blockers.blockee_relation")
+    # serialize_rules = ("-hosts.user", "-guests.user", "-event_blockeds.user", "-blockers", "-blockees")
+    serialize_only = ("name", "dietary_restrictions", "profile_image", "hosts.event_id", "event_blockeds.event_id", "blockers.blockee_id", "blockees.blocker_id", "guests.invites", "guests.event_id")
 
     # methods
     # block another user (input the entire blockee)
@@ -77,7 +80,7 @@ class Host(db.Model, SerializerMixin):
     event = db.relationship('Event', back_populates=('hosts'))
 
     # relationship
-    invites = db.relationship('Invite', back_populates = ('host'))
+    invites = db.relationship('Invite', back_populates = ('host'), cascade = 'all, delete')
 
     # serialize rules
     serialize_rules = ("-user.hosts", "-event.hosts", "-invites.host")
@@ -100,7 +103,7 @@ class Guest(db.Model, SerializerMixin):
     event = db.relationship('Event', back_populates= ('guests'))
 
     # relationships
-    invites = db.relationship('Invite', back_populates = ('guest'))
+    invites = db.relationship('Invite', back_populates = ('guest'), cascade = 'all, delete')
 
     # serialize rules
     serialize_rules = ("-user.guests", "-event.guests", "-invites.guest")
@@ -122,8 +125,8 @@ class Invite(db.Model, SerializerMixin):
     guest = db.relationship('Guest', back_populates=('invites'))
 
     # serialize rules
-    serialize_rules = ("-host.invites", "-guest.invites", "-host.user", "-host.event")
-
+    # serialize_rules = ("-host.invites", "-guest.invites", "-host.user", "-host.event", "-guest.event", "-guest.user")
+    serialize_only = ("host.user.name", "guest.user.name")
 
 class Event(db.Model, SerializerMixin):
     __tablename__ = 'events'
@@ -139,12 +142,13 @@ class Event(db.Model, SerializerMixin):
     image = db.Column(db.String)
 
     #relationships
-    event_blockeds = db.relationship('EventBlocked', back_populates='event')
-    hosts = db.relationship('Host', back_populates='event')
-    guests = db.relationship('Guest', back_populates='event')
+    event_blockeds = db.relationship('EventBlocked', back_populates='event', cascade = 'all, delete')
+    hosts = db.relationship('Host', back_populates='event', cascade = 'all, delete')
+    guests = db.relationship('Guest', back_populates='event', cascade = 'all, delete')
 
     # serialize rules
-    serialize_rules = ("-event_blockeds.event", "-hosts.event", "-guests.event")
+    # serialize_rules = ("-event_blockeds.event", "-hosts.event", "-guests.event")
+    serialize_only = ("hosts.user", "guests.user", "event_blockeds.user")
 
     # methods
     def all_blocked(self):
