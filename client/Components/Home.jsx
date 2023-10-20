@@ -16,19 +16,21 @@ function Home() {
 
   return (
     <div>
-      <h1>Welcome to Get Together!</h1>
-      <p>Discover and plan events with ease!</p>
+      <h1 id="welcome-heading" className="main-heading">
+        Welcome to Get Together!
+      </h1>
+      <p className="subtext">Discover and plan events with ease!</p>
 
-      <h2>Events</h2>
-      <img src='https://www.therooftopguide.com/rooftop-news/Bilder/rooftop-party-hero.jpg' />
-      <ul>
+      <h2 className="section-heading">Events</h2>
+      <img src="URL HERE" alt="Event Image" className="event-image" />
+      <ul className="event-list">
         {events.map((event) => (
-          <li key={event.id}>
-            <img src="./assets/dogparty.jpg" alt="Event" />
-            <h3>{event.name}</h3>
-            <p>Date: {event.date}</p>
-            <p>Location: {event.location}</p>
-            <p>{event.description}</p>
+          <li key={event.id} className="event-item">
+            <img src="./assets/dogparty.jpg" alt="Event" className="event-item-image" />
+            <h3 className="event-name">{event.name}</h3>
+            <p className="event-info">Date: {event.date}</p>
+            <p className="event-info">Location: {event.location}</p>
+            <p className="event-description">{event.description}</p>
           </li>
         ))}
       </ul>
@@ -37,5 +39,11 @@ function Home() {
 }
 
 export default Home;
+
+
+
+
+
+
 
 

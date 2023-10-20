@@ -1,35 +1,33 @@
-
 import React, { useState } from 'react';
 
 function Signup({ history }) {
   const [name, setName] = useState('');
-  const [dietaryRestrictions, setdietaryRestrictions] = useState('');
+  const [dietaryRestrictions, setDietaryRestrictions] = useState('');
   const [password, setPassword] = useState('');
-  const [profile_image, setprofile_image] = useState('https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg')
+  const [profile_image, setProfileImage] = useState('https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg');
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
     if (name === 'name') {
       setName(value);
-    // } else if (name === 'DOB') {
-    //   setDOB(value);
     } else if (name === 'dietaryRestrictions') {
-      setdietaryRestrictions(value);
+      setDietaryRestrictions(value);
     } else if (name === 'password') {
       setPassword(value);
     } else if (name === 'profile_image') {
-      setprofile_image(value);
-    }  };
+      setProfileImage(value);
+    }
+  };
 
   const handleSignup = () => {
     // form validation
     if (!name || !password) {
       alert('Please enter a name and password.');
-      return;password
+      return;
     }
-    console.log(JSON.stringify({ name, profile_image, dietaryRestrictions, password }))
-    // POST request for new user account
+    console.log(JSON.stringify({ name, profile_image, dietaryRestrictions, password }));
+    // POST request for a new user account
     fetch('/api/users', {
       method: 'POST',
       headers: {
@@ -37,26 +35,26 @@ function Signup({ history }) {
       },
       body: JSON.stringify({ name, profile_image, dietaryRestrictions, password }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.ok) {
-        // Handle successful signup, redirect to login page
-        history.push('/login');
-      } else {
-        // Handle signup error
-        alert(data.message);
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      // Handle network or other errors
-      alert('An error occurred. Please try again.');
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.ok) {
+          // Handle a successful signup, redirect to the login page
+          history.push('/login');
+        } else {
+          // Handle a signup error
+          alert(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // Handle network or other errors
+        alert('An error occurred. Please try again.');
+      });
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
+    <div id="signup">
+      <h1 id="signup-title">Sign Up</h1>
       <form>
         <div>
           <label htmlFor="name">Name:</label>
@@ -68,16 +66,6 @@ function Signup({ history }) {
             onChange={handleInputChange}
           />
         </div>
-        {/* <div>
-          <label htmlFor="DOB">Date of Birth:</label>
-          <input
-            type="date"
-            id="DOB"
-            name="DOB"
-            value={DOB}
-            onChange={handleInputChange}
-          />
-        </div> */}
         <div>
           <label htmlFor="dietaryRestrictions">Dietary Restrictions:</label>
           <input
@@ -99,7 +87,6 @@ function Signup({ history }) {
           />
         </div>
         <div>
-        <div>
           <label htmlFor="profile_image">Image URL:</label>
           <input
             type="text"
@@ -108,7 +95,6 @@ function Signup({ history }) {
             value={profile_image}
             onChange={handleInputChange}
           />
-        </div>
         </div>
         <div>
           <button type="button" onClick={handleSignup}>
@@ -121,4 +107,8 @@ function Signup({ history }) {
 }
 
 export default Signup;
+
+
+
+
 
