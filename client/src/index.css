@@ -24,11 +24,16 @@ a:hover {
 }
 
 body {
+  background-image: url('https://media.macphun.com/img/uploads/macphun/blog/1945/brilliant-3806412_1920.jpg'); /* Replace with the actual path to your foreground image */
+  background-size: cover;
+  background-repeat: no-repeat;
   margin: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  /* place-items: center; */
+  justify-content: center;
+  /* align-content: end; */
+  /* min-width: 320px; */
+  height: 100vh;
 }
 
 h1 {
@@ -65,27 +70,127 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
-  }
-/*NAVBAR*/
+  }}
+  /*NAVBAR*/
+/* index.css */
+.navbar-title {
+  font-size: 24px;
+  color: #333; /* Change to your preferred color */
+  text-align: center;
+  padding: 20px;
+  background-color: #f8f8f8; /* Change to your preferred background color */
+}
+
+.custom-navbar {
+   /* Change to your preferred background color */
+  color: #fff; /* Change to your preferred text color */
+}
+
 .navbar-nav {
-  display: flex;
-  flex-direction: row;
-  list-style-type: none;
+  list-style: none;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  margin: 0;
 }
 
 .nav-item {
-  margin-right: 20px;
+  margin: 0 10px;
 }
+
+.nav-link {
+  text-decoration: none;
+  color: #fff; /* Change to your preferred link color */
 }
-  
-  
-  
-  
-  
-  
-  
-  
+
+/* Add hover effect for links */
+.nav-link:hover {
+  color: #00f; /* Change to your preferred hover color */
+}
+
+/* Add these styles to your existing CSS or create a new CSS file if needed */
+
+/* Center content in the body */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.main-heading {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.subtext {
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.section-heading {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.event-image {
+  width: 100%; /* Adjust the width as needed */
+  max-width: 800px; /* Set a maximum width for the image */
+  margin-top: 20px;
+}
+
+.event-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.event-item {
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 300px; /* Adjust the width as needed */
+  text-align: center;
+}
+
+.event-item-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.event-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.event-info {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.event-description {
+  font-size: 16px;
+}
+
+.foreground-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Place the image behind content */
+}
+
   
   
   
