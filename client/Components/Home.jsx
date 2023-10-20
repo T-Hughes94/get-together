@@ -20,7 +20,7 @@ function Home() {
       <p>Discover and plan events with ease!</p>
 
       <h2>Events</h2>
-      <img src='URL HERE' />
+      <img src='https://www.therooftopguide.com/rooftop-news/Bilder/rooftop-party-hero.jpg' />
       <ul>
         {events.map((event) => (
           <li key={event.id}>

@@ -67,3 +67,42 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* Style the navigation bar */
+.navbar-title {
+  text-align: center;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 0;
+  font-size: 24px;
+}
+
+.custom-navbar {
+  background-color: #333;
+}
+
+.navbar-nav {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #fff;
+  margin: 0 20px;
+}
+
+/* Style the active link */
+.nav-link.active {
+  font-weight: bold;
+}
+
+/* Style the HR separator */
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 20px 0;
+}
+

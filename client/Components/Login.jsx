@@ -12,7 +12,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('api/login', {
+      const response = await fetch('http://127.0.0.1:5555', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -23,6 +23,7 @@ const Login = () => {
       if (response.ok) {
         const user = await response.json();
         console.log('Logged in as:', user.name);
+        localStorage.setItem('user', Json,stringify(user));
       } else {
         setError('Login failed');
       }
@@ -34,8 +35,14 @@ const Login = () => {
     // .then(r=>console.log(r))
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+  }
+
+  const isUserLoggedIn = !!localStorage.getItem('user')
+
   return (
-    <div>
+    <div id = 'login'>
       <h2>Login</h2>
       <form>
         <div>
