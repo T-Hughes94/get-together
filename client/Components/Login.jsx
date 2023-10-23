@@ -12,7 +12,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:5555', {
+      const response = await fetch('api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -23,35 +23,30 @@ const Login = () => {
       if (response.ok) {
         const user = await response.json();
         console.log('Logged in as:', user.name);
-        localStorage.setItem('user', JSON.stringify(user)); // Corrected 'Json,stringify' to 'JSON.stringify'
       } else {
         setError('Login failed');
       }
     } catch (error) {
       setError('Error: ' + error.message);
     }
+    // fetch('/api/users/1')
+    // .then(r=>r.json())
+    // .then(r=>console.log(r))
   };
-
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-  };
-
-  const isUserLoggedIn = !!localStorage.getItem('user');
 
   return (
-    <div className="login-container">
-      <h2 className="login-title">Login</h2>
-      <form className="login-form">
+    <div>
+      <h2>Login</h2>
+      <form>
         <div>
           <label htmlFor="username">Username</label>
           <input
             type="text"
             id="username"
-            className="login-input"
             value={username}
             onChange={(e) => {
-              setUsername(e.target.value);
-              console.log(username);
+              setUsername(e.target.value)
+              console.log(username)
             }}
           />
         </div>
@@ -60,13 +55,12 @@ const Login = () => {
           <input
             type="password"
             id="password"
-            className="login-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        {error && <p className="error-message" style={{ color: 'red' }}>{error}</p>}
-        <button className="login-button" type="button" onClick={handleLogin}>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button type="button" onClick={handleLogin}>
           Login
         </button>
       </form>
@@ -75,5 +69,3 @@ const Login = () => {
 };
 
 export default Login;
-
-

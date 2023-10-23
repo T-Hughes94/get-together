@@ -265,7 +265,17 @@ class UserEvents(Resource):
         user = User.query.filter(User.id == id).first()
         if not user:
             return make_response(jsonify({"error": "user not found"}), 404)
-        user_events = [e.to_dict() for e in Event.query.filter((id in [h.user_id for h in Event.hosts]) or (id in [g.user_id for g in Event.guests])).all()]
+        user_events = []
+        for guest in user.guests:
+            user_events.append(Event.query.filter(Event.id == guest.event_id).first().to_dict())
+        for host in user.hosts:
+            user_events.append(Event.query.filter(Event.id == host.event_id).first().to_dict())
+
+        # print(user_guest_events)
+        # user_events = [e.to_dict() for e in user_host_events+user_guest_events]
+        # user_events = [user_host_events+user_guest_events]
+
+
         return make_response(user_events, 200)
     
 api.add_resource(UserEvents, '/users/<int:id>/events')
@@ -345,7 +355,7 @@ class CheckSession(Resource):
     def get(self):
         user = User.query.filter(User.id == session.get('user_id')).first()
         if user:
-            return user.to_dict(only=('username', 'id'))
+            return user.to_dict(only=('name', 'id', 'profile_image'))
         else:
             return {'message': 'Not Authorized'}, 401
         

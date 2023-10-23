@@ -8,6 +8,10 @@ import Event from "/Components/Event";
 import './index.css';
 
 function App() {
+
+  function handleLogout(){
+    fetch('api/logout', {method: 'DELETE'})
+  }
   return (
     <BrowserRouter>
       <div>
@@ -19,6 +23,7 @@ function App() {
             <li className="nav-item"><Link to={'/Profile'} className="nav-link">Profile</Link></li>
             <li className="nav-item"><Link to={'/SignUp'} className="nav-link">SignUp</Link></li>
             <li className="nav-item"><Link to={'/Event'} className="nav-link">Event</Link></li>
+            <li className="nav-item"><Link to={'/Login'} className="nav-link" onClick={handleLogout}>Log Out</Link></li>
           </ul>
           <Routes className="navbar-routes">
             <Route path='/' element={<Home />} />

@@ -26,12 +26,12 @@ function Home() {
       <ul className="event-list">
         {events.map((event) => (
           <li key={event.id} className="event-item">
-            <img src="./assets/dogparty.jpg" alt="Event" className="event-item-image" />
-            <h3 className="event-name">{event.name}</h3>
-            <p className="event-info">Date: {event.date}</p>
-            <p className="event-info">Location: {event.location}</p>
-            <p className="event-description">{event.description}</p>
-          </li>
+              <img src={event.image} alt="Event" className="event-item-image" />
+              <h3 className="event-name">{event.title}</h3>
+              {/* <p className="event-info">Date: {event.date}</p> */}
+              {/* <p className="event-info">Location: {event.dat}</p> */}
+              <p className="event-description">{event.description}</p>
+            </li>
         ))}
       </ul>
     </div>

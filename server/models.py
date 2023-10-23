@@ -148,7 +148,7 @@ class Event(db.Model, SerializerMixin):
 
     # serialize rules
     # serialize_rules = ("-event_blockeds.event", "-hosts.event", "-guests.event")
-    serialize_only = ("hosts.user", "guests.user", "event_blockeds.user")
+    serialize_only = ("hosts.user", "guests.user", "event_blockeds.user", "description", "image", "titled")
 
     # methods
     def all_blocked(self):
